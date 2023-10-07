@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="jsFile.js"></script>
+    <title>Test</title>
+  </head>
+  <body>
+      <div class="division" id="div1"></div>
+      <div class="division" id="div2"></div>
+      <button id="click">Click Here</button>
+    <div class="root"><div class="division" id="div3"></div></div>
+  </body>
+  <style>
+    .root {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      justify-content: center;
+      align-items: center;
+    }
+    .division {
+      border: 1px solid #00aa6c;
+      background-color: lightblue;
+      padding: 10px;
+      border-radius: 5px;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 1.2rem;
+    }
+  </style>
+</html>
