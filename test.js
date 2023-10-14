@@ -4,51 +4,44 @@ async function getQuestion() {
   return response.qList1;
 }
 
-//declarations
 const question = document.querySelector(".question");
 const optionsDiv = document.querySelector(".options");
-const prevBtn = document.querySelectorAll(".progress-btn")[0];
-const nextBtn = document.querySelectorAll(".progress-btn")[1];
-const qNumber = document.querySelector("[q-number]");
-const secondsDiv = document.querySelector(".seconds");
-const minutesDiv = document.querySelector(".minutes");
-const imageDiv = document.querySelector(".q-image");
-const container = document.querySelector(".container");
-const start = document.querySelector(".start");
+const prevBtn = document.querySelectorAll(".button")[0];
+const nextBtn = document.querySelectorAll(".button")[1];
+const qNumber = document.querySelector(".questionNumber");
 let selectedOption = [];
 let selectedQuestionIndex = [];
-let correctAnswers = [];
-let marks = 0;
+
 getQuestion().then((list) => {
   let listLength = list.length;
   let index = 0;
 
   const render = (index) => {
+    prevBtn.style.backgroundColor = index == 0 ? "#03c98750" : "#03c987";
     index == 0
-      ? prevBtn.setAttribute("class", "prev-btn ")
-      : prevBtn.removeAttribute("class", "prev-btn");
-    prevBtn.classList.add("progress-btn");
+      ? prevBtn.setAttribute("disabled", "disabled")
+      : prevBtn.removeAttribute("disabled", "disabled");
+
     nextBtn.style.backgroundColor =
-      index == listLength - 1 ? "#ff0000" : "#0a69ed";
+      index == listLength - 1 ? "#ff0000" : "#03c987";
     nextBtn.innerHTML = index == listLength - 1 ? "Submit" : "Next";
-    qNumber.innerHTML = index + 1;
-    question.innerHTML = list[index].question;
+
+    question.innerHTML = `Q${index + 1}. ${list[index].question}`;
     // Clear existing options
     optionsDiv.innerHTML = "";
     //map the option in p elements
     list[index].options.map((option) => {
       let p = document.createElement("p");
       p.innerText = option;
-      p.setAttribute("class", "choices");
-
+      p.setAttribute("class", "options-p");
       // Check if this option was selected previously
       selectedOption.map((obj) => {
         if (obj.qIndex === index && obj.answer === option) {
-          p.classList.add("clickedDiv");
+          p.classList.add("options-clicked");
         }
       });
       if (selectedOption.includes(option)) {
-        p.classList.add("clickedDiv");
+        p.classList.add("options-clicked");
       }
       optionsDiv.appendChild(p);
     });
@@ -67,13 +60,12 @@ getQuestion().then((list) => {
           // Add a new entry
           selectedOption.push({ qIndex: index, answer: chosenAnswer });
         }
-        console.log(handleSubmission(list, selectedOption));
         console.log(selectedOption);
-        elem.classList.add("clickedDiv");
+        elem.classList.add("options-clicked");
 
         pElements.forEach((otherPElement) => {
           if (otherPElement !== elem) {
-            otherPElement.classList.remove("clickedDiv");
+            otherPElement.classList.remove("options-clicked");
             selectedOption = selectedOption.filter((element) => {
               return element.chosenAnswer !== otherPElement.innerText;
             });
@@ -95,34 +87,3 @@ getQuestion().then((list) => {
     render(index);
   });
 });
-
-start.addEventListener("click", atStart);
-
-function atStart() {
-  start.style.display = "none";
-  container.classList.add("container-shown");
-}
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    atStart();
-  }
-});
-
-function handleSubmission(list, selectedOption) {
-  const correctAnswers = [];
-
-  for (let i = 0; i < list.length; i++) {
-    correctAnswers.push({ id: list[i].id, correct: list[i].correct });
-  }
-
-  // Use some method to check if there is at least one match
-  const isCorrect = correctAnswers.some((obj) => {
-    return selectedOption.some((selectedObj) => {
-      return (
-        obj.id === selectedObj.qIndex + 1 && obj.correct === selectedObj.answer
-      );
-    });
-  });
-
-  return isCorrect;
-}

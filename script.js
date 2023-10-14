@@ -1,6 +1,6 @@
 const qNumber = document.querySelector("[q-number]");
 const question = document.querySelector(".question");
-const options = document.querySelector(".options");
+const optionsDiv = document.querySelector(".options");
 const nextBtn = document.getElementById("next-btn");
 const qSubmit = document.querySelector(".q-submit");
 const prevBtn = document.getElementById("prev-btn");
@@ -44,7 +44,7 @@ window.onload = fetch("./questions.json")
       //   // console.log(this.index);
       // }
       clearDiv() {
-        options.innerHTML = "";
+        optionsDiv.innerHTML = "";
       }
       appendDiv() {
         if (this.index < this.qList.length) {
@@ -63,11 +63,11 @@ window.onload = fetch("./questions.json")
           question.textContent = this.qList[this.index].question;
           qNumber.textContent = this.index + 1;
           console.log(this.qList[this.index].correct);
-          this.qList[this.index].options.forEach((elem) => {
+          this.qList[this.index].optionsDiv.forEach((elem) => {
             let div = document.createElement("div");
             div.setAttribute("class", "choices");
             div.innerHTML = elem;
-            options.appendChild(div);
+            optionsDiv.appendChild(div);
           });
         } else {
           // return;
@@ -134,17 +134,9 @@ window.onload = fetch("./questions.json")
         div.style.pointerEvents = "none";
         div.style.textAlign = "center";
         div.setAttribute("class", "choices");
-        options.appendChild(div);
+        optionsDiv.appendChild(div);
         nextBtn.style.display = "none";
         prevBtn.style.display = "none";
-
-        // let goBack = document.createElement("button");
-        // goBack.setAttribute("class", "progress-btn");
-        // goBack.id = "go-back";
-        // goBack.innerText = "Go back";
-        // goBack.onclick;
-        // qSubmit.style.justifyContent = "center";
-        // qSubmit.appendChild(goBack);
       }
     }
 
@@ -163,7 +155,6 @@ window.onload = fetch("./questions.json")
 
     // quiz.previousQuestion();
     prevBtn.addEventListener("click", () => {
-      console.log("Quiz index:" + quiz.index);
 
       if (quiz.index === 0) {
         prevBtn.classList.add("prev-btn");
@@ -194,7 +185,6 @@ window.onload = fetch("./questions.json")
     document.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
         console.log(true);
-        let start = document.querySelector(".start");
         atStart();
       }
     });
@@ -203,19 +193,6 @@ window.onload = fetch("./questions.json")
     let minutes = 1;
     function startTimer() {
       let time = setInterval(() => {
-        // secondsDiv.textContent = Number(secondsDiv.textContent) - 1;
-        // if (Number(secondsDiv.textContent) === -1) {
-        //   secondsDiv.textContent = 5;
-        //   minutesDiv.textContent = Number(minutesDiv.textContent) - 1;
-        // }
-        // if (
-        //   Number(minutesDiv.textContent) === 0 &&
-        //   Number(secondsDiv.textContent) === 0
-        // ) {
-        //   clearInterval(time);
-        //   secondsDiv.textContent = 0;
-        //   minutesDiv.textContent = 0;
-        // }
         secondsDiv.textContent = second < 10 ? "0" + second-- : second--;
         minutesDiv.textContent = minutes < 10 ? "0" + minutes : minutes;
         if (second <= -1) {
@@ -234,3 +211,5 @@ window.onload = fetch("./questions.json")
       }, 1000);
     }
   });
+
+
